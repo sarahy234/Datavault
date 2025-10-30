@@ -54,13 +54,13 @@ Convertirnos en la plataforma de referencia para la gestión de materiales acad�
 ## Tecnologías Utilizadas
 | Componente | Herramienta |
 |-------------|--------------|
-| **Frontend** | React.js, HTML5, CSS3, JavaScript |
+| **Frontend** | HTML5, CSS3, JavaScript |
 | **Backend** | Node.js con Express |
 | **Base de Datos** | MySQL |
 | **Servidor Web** | Apache / Nginx |
 | **Control de Versiones** | Git y GitHub |
 | **Documentación y Modelado** | Draw.io, Visual Paradigm, Word |
-| **Gestión de Proyecto** | Trello, Miro, Notion |
+| **Gestión de Proyecto** | Trello, Miro |
 
 ---
 
