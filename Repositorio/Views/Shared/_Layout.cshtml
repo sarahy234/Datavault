@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>@ViewData["Title"] - DataVault</title>
+
+    <style>
+        :root {
+            --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        }
+    </style>
+
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" asp-controller="Home" asp-action="Index">
+                <div class="logo-wrap" id="logo-wrap" title="DataVault">
+                    <img src="~/assets/img/logoRep.jpg" alt="DataVault" class="logo-img" id="logo-img">
+                </div>
+                <div class="brand-text">
+                    <div class="title">DataVault</div>
+                    <div class="subtitle">ISI - Universidad del Valle</div>
+                </div>
+            </a>
+
+            <nav class="nav-desktop" aria-label="Principal">
+                <a class="nav-btn" asp-controller="Home" asp-action="Index">Inicio</a>
+                <a class="nav-btn" href="#acerca">Acerca</a>
+                <a class="nav-btn" href="#productos">Productos</a>
+                <a class="btn-outline" asp-controller="Home" asp-action="Login">Login</a>
+                <a class="btn-primary" asp-controller="Home" asp-action="SignUp">Sign Up</a>
+            </nav>
+        </div>
+    </header>
+
+    <main role="main">
+        @RenderBody()  <!-- Aquí se inserta el contenido de cada página -->
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="col contacto">
+                <h4>Contacto</h4>
+                <p><img src="~/assets/img/ubicacion.png" alt="Ubicación" class="icon"> Universidad Privada del Valle<br />Sede La Paz, Bolivia</p>
+                <p><img src="~/assets/img/contacto.png" alt="Teléfono" class="icon"> +591 6 9869998</p>
+                <p><img src="~/assets/img/correo.png" alt="Correo" class="icon"> datavault@univalle.edu</p>
+            </div>
+
+            <div class="col redes">
+                <h4>Síguenos</h4>
+                <div class="socials">
+                    <a href="#"><img src="~/assets/img/facebook.png" alt="Facebook"></a>
+                    <a href="#"><img src="~/assets/img/instagram.png" alt="Instagram"></a>
+                    <a href="#"><img src="~/assets/img/whatsapp.png" alt="Whatsapp"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="copyright">
+            © 2025 <strong>DataVault</strong> — Proyecto académico ISI - UNIVALLE.
+        </div>
+    </footer>
+
+    <script src="~/js/script.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
