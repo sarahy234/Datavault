@@ -80,6 +80,5 @@ Convertirnos en la plataforma de referencia para la gestión de materiales acad�
 - /backend → Lógica del servidor y controladores
 - /database → Scripts SQL y modelos de datos
 - /docs → Documentación técnica y diagramas
-- /tests → Pruebas unitarias y de integración
 - /assets → Recursos multimedia y estáticos
 - README.md → Descripción general del proyecto
