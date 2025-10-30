@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Registro - DataVault</title>
+  <style>
+    :root{--font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+  </style>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="auth-bg">
+  <a href="index.html" class="back-floating">← Volver al inicio</a>
+
+  <main class="auth-main">
+    <div class="auth-card animated-pop">
+      <div class="brand-top">
+        <img src="assets/img/logoRep.jpg" class="small-logo" alt="DataVault">
+        <h2>Crear Cuenta</h2>
+        <p class="muted">Únete al Repositorio DataVault</p>
+      </div>
+
+      <form id="signup-form" class="form-auth" novalidate>
+        <label>Nombre completo
+          <input id="su-name" type="text" placeholder="Ej: María García" required />
+          <span class="error" data-for="su-name"></span>
+        </label>
+
+        <label>Correo institucional
+          <input id="su-email" type="email" placeholder="usuario@est.univalle.edu" required />
+          <small class="note">Formato: @est.univalle.edu</small>
+          <span class="error" data-for="su-email"></span>
+        </label>
+
+        <label>Contraseña
+          <div class="pwd-wrap">
+            <input id="su-password" type="password" placeholder="Crea una contraseña segura" required />
+            <button type="button" class="pwd-toggle" data-target="su-password" aria-label="Mostrar contraseña"><img src="assets/img/ojo.png" alt=""></button>
+          </div>
+          <span class="error" data-for="su-password"></span>
+        </label>
+
+        <label>Confirmar Contraseña
+          <div class="pwd-wrap">
+            <input id="su-confirm" type="password" placeholder="Repite tu contraseña" required />
+            <button type="button" class="pwd-toggle" data-target="su-confirm" aria-label="Mostrar contraseña"><img src="assets/img/ojo.png" alt=""></button>
+          </div>
+          <span class="error" data-for="su-confirm"></span>
+        </label>
+
+        <div id="password-hints" class="password-hints">
+          <div id="h-length" class="hint">• 8+ caracteres</div>
+          <div id="h-upper" class="hint">• Al menos una mayúscula</div>
+          <div id="h-lower" class="hint">• Al menos una minúscula</div>
+          <div id="h-number" class="hint">• Al menos un número</div>
+        </div>
+
+        <label>Rol
+          <select id="su-role" required>
+            <option value="">Selecciona tu rol</option>
+            <option value="estudiante">Estudiante</option>
+            <option value="docente">Docente</option>
+            <option value="gestor">Gestor</option>
+            <option value="coordinacion">Coordinación</option>
+            <option value="ti">TI</option>
+          </select>
+          <span class="error" data-for="su-role"></span>
+        </label>
+
+        <label class="terms">
+          <input id="su-terms" type="checkbox" /> Acepto los términos y condiciones del Repositorio DataVault y el uso de datos institucionales
+        </label>
+        <span class="error" data-for="su-terms"></span>
+
+        <button type="submit" class="btn-primary btn-block"><img src="assets/img/CrearCuenta.png" class="iconLoginSignUp">Crear Cuenta</button>
+      </form>
+
+      <p class="muted center">¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a></p>
+    </div>
+  </main>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

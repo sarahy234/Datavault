@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DataVault - Repositorio Académico</title>
+
+  <!-- system UI font stack (solicitado) -->
+  <style>
+    :root {
+      --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+  </style>
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="DataVault">
+        <div class="logo-wrap" id="logo-wrap" title="DataVault">
+          <img src="assets/img/logoRep.jpg" alt="DataVault" class="logo-img" id="logo-img">
+        </div>
+        <div class="brand-text">
+          <div class="title">DataVault</div>
+          <div class="subtitle">ISI - Universidad del Valle</div>
+        </div>
+      </a>
+
+      <nav class="nav-desktop" aria-label="Principal">
+        <button class="nav-btn" data-target="#inicio">INICIO</button>
+        <button class="nav-btn" data-target="#bienvenida">Bienvenida</button>
+        <button class="nav-btn" data-target="#acerca">Acerca</button>
+        <button class="nav-btn" data-target="#productos">Productos</button>
+        <a class="btn-outline" href="login.html">Login</a>
+        <a class="btn-primary" href="signup.html">Sign Up</a>
+      </nav>
+
+      <button id="mobile-toggle" class="mobile-toggle" aria-expanded="false" aria-label="Abrir menú">☰</button>
+    </div>
+
+    <div id="mobile-menu" class="mobile-menu" aria-hidden="true">
+      <button class="nav-btn" data-target="#inicio">INICIO</button>
+      <button class="nav-btn" data-target="#bienvenida">Bienvenida</button>
+      <button class="nav-btn" data-target="#acerca">Acerca</button>
+      <button class="nav-btn" data-target="#productos">Productos</button>
+      <a class="btn-outline" href="login.html">Login</a>
+      <a class="btn-primary" href="signup.html">Sign Up</a>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <!-- HERO -->
+    <section id="bienvenida" class="hero" aria-label="Presentación">
+      <div class="slides" id="slides">
+        <div class="slide" data-src="assets/img/carrusel1.jpg"></div>
+        <div class="slide" data-src="assets/img/carrusel2.jpg"></div>
+        <div class="slide" data-src="assets/img/carrusel3.jpg"></div>
+        <div class="slide" data-src="assets/img/carrusel4.jpg"></div>
+      </div>
+
+      
+      <!-- overlay degradado difuminado delante de la imagen -->
+      <div class="overlay-gradient"></div>
+
+      <div class="hero-inner container">
+        <div class="hero-left">
+          <img src="assets/img/libro.png" alt="" class="hero-icon">
+          <h1 class="fade-in-up">Repositorio Digital de Material Académico</h1>
+          <p class="lead fade-in-up delay-1">Centraliza, organiza y preserva los materiales académicos de la carrera de Ingeniería de Sistemas — Universidad del Valle, La Paz.</p>
+
+          <div class="hero-actions fade-in-up delay-2">
+            <a class="btn-cta" href="#productos">Explorar Repositorio</a>
+            <a class="btn-ghost" href="#acerca">Más Información</a>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="card quick-access fade-in-right">
+            <h4>Buscar recurso</h4>
+            <div class="search-row">
+              <input id="quick-search" placeholder="Buscar por materia, autor, palabra clave..." />
+              <button id="search-btn" title="Buscar"><img src="assets/img/buscar.png" alt="buscar"></button>
+            </div>
+            <p class="small">Vista previa en línea | filtros por materia, semestre y autor.</p>
+          </div>
+        </div>
+      </div>
+
+      <button class="hero-arrow left" data-action="prev" aria-label="Anterior">‹</button>
+      <button class="hero-arrow right" data-action="next" aria-label="Siguiente">›</button>
+      <div class="hero-dots" role="tablist"></div>
+    </section>
+
+    <!-- ACERCA -->
+    <section id="acerca" class="about container">
+      <div class="about-intro fade-in-up">
+        <h2>Acerca de Nosotros</h2>
+        <p class="muted">Somos el equipo DataVault, estudiantes de 4to semestre de Ingeniería de Sistemas de la Universidad del Valle, sede La Paz, Bolivia.</p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-left">
+          <div class="card mission fade-in-up">
+            <div class="card-left-accent accent-blue"><img src="assets/img/documento.png" alt=""></div>
+            <div class="card-body">
+              <h3>Nuestra Misión</h3>
+              <p>Diseñar e implementar un repositorio digital de materiales académicos que garantice la centralización, organización y validación institucional de los recursos utilizados por estudiantes y docentes de la carrera de Ingeniería de Sistemas. Buscamos mejorar el acceso a la información académica, eliminar la dispersión de recursos y asegurar la preservación digital del conocimiento generado en nuestra comunidad universitaria.</p>
+            </div>
+          </div>
+
+          <div class="card vision fade-in-up delay-1">
+            <div class="card-left-accent accent-purple"><img src="assets/img/multiRol.png" alt=""></div>
+            <div class="card-body">
+              <h3>Nuestra Visión</h3>
+              <p>Convertirnos en la plataforma de referencia para la gestión de materiales académicos en la carrera de Ingeniería de Sistemas, estableciendo un estándar de calidad, accesibilidad y confiabilidad que pueda ser replicado en otras carreras de la Universidad del Valle. Aspiramos a crear un ecosistema digital que fomente la colaboración académica, preserve el conocimiento institucional y facilite el aprendizaje continuo de toda la comunidad universitaria.</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="news fade-in-right">
+          <div class="news-header">Novedades &amp; Anuncios</div>
+          <div class="news-list">
+            <article class="news-item">
+              <div class="badge" style="background:linear-gradient(90deg,#50A3FE,#814DFE)"><img src="assets/img/novedad.png" alt="" class="news-icon"></div>
+              <div class="news-content">
+                <strong>Nueva Funcionalidad</strong>
+                <small>25 Oct 2025</small>
+                <p>Vista previa de documentos en línea sin necesidad de descarga.</p>
+              </div>
+            </article>
+
+            <article class="news-item">
+              <div class="badge" style="background:linear-gradient(90deg,#C726AA,#9021E9)"><img src="assets/img/anuncio.png" alt="" class="news-icon"></div>
+              <div class="news-content">
+                <strong>Fase Piloto</strong>
+                <small>20 Oct 2025</small>
+                <p>Iniciamos pruebas piloto con 5 asignaturas del 4to semestre.</p>
+              </div>
+            </article>
+
+            <article class="news-item">
+              <div class="badge" style="background:linear-gradient(90deg,#1C62F5,#394AB7)"><img src="assets/img/oferta.png" alt="" class="news-icon"></div>
+              <div class="news-content">
+                <strong>Almacenamiento Ampliado</strong>
+                <small>15 Oct 2025</small>
+                <p>500 GB de capacidad inicial para materiales académicos.</p>
+              </div>
+            </article>
+
+            <article class="news-item">
+              <div class="badge" style="background:linear-gradient(90deg,#50A3FE,#C726AA)"><img src="assets/img/promocion.png" alt="" class="news-icon"></div>
+              <div class="news-content">
+                <strong>Registro Abierto</strong>
+                <small>Vigente</small>
+                <p>¡Únete ahora y sé parte de nuestra comunidad académica!</p>
+              </div>
+            </article>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- PRODUCTOS -->
+    <section id="productos" class="products container">
+      <div class="products-head fade-in-up">
+        <h2>Productos y Servicios</h2>
+        <p class="muted">Descubre todas las funcionalidades que DataVault ofrece para mejorar tu experiencia académica. Click en cada tarjeta para más información.</p>
+      </div>
+
+      <div class="grid-products fade-in-up delay-1">
+        <!-- 8 tarjetas -->
+        <!-- 1 Gestión de Documentos -->
+        <div class="product-card" tabindex="0">
+          <div class="face front">
+            <div class="icon-circle" style="background:linear-gradient(90deg,#50A3FE,#814DFE)"><img src="assets/img/documento.png" alt=""></div>
+            <h4>Gestión de Documentos</h4>
+            <p class="desc">Carga y gestiona PDF, PPTX, DOCX, ZIP y código con metadatos obligatorios.</p>
+            <small class="small-click-front">Click para ver más</small>
+          </div>
+          <div class="face back">
+            <h4>Gestión de Documentos</h4>
+            <p>Control de versiones automático y metadatos enriquecidos para facilitar búsqueda y preservación.</p>
+            <small class="small-click-back">Click para volver</small>
+          </div>
+        </div>
+
+        <!-- 2 Búsqueda -->
+        <div class="product-card" tabindex="0">
+          <div class="face front">
+            <div class="icon-circle" style="background:linear-gradient(90deg,#C726AA,#9021E9)"><img src="assets/img/buscar.png" alt=""></div>
+            <h4>Búsqueda Avanzada</h4>
+            <p class="desc">Filtros por materia, semestre, autor, tipo y palabras clave.</p>
+            <small class="small-click-front">Click para ver más</small>
+          </div>
+          <div class="face back">
+            <h4>Búsqueda Avanzada</h4>
+            <p>Resultados relevantes con vista previa instantánea y filtros combinados.</p>
+            <small class="small-click-back">Click para volver</small>
+          </div>
+        </div>
+
+        <!-- 3 Validación -->
+        <div class="product-card" tabindex="0">
+          <div class="face front">
+            <div class="icon-circle" style="background:linear-gradient(90deg,#1C62F5,#394AB7)"><img src="assets/img/validacion.png" alt=""></div>
+            <h4>Validación Institucional</h4>
+            <p class="desc">Flujo de curaduría: pendiente → revisión → aprobado.</p>
+            <small class="small-click-front">Click para ver más</small>
+          </div>
+          <div class="face back">
+            <h4>Validación Institucional</h4>
+            <p>Curaduría y certificación de documentos oficiales por coordinación/biblioteca.</p>
+            <small class="small-click-back">Click para volver</small>
+          </div>
+        </div>
+
+        <!-- 4 Almacenamiento -->
+        <div class="product-card" tabindex="0">
+          <div class="face front">
+            <div class="icon-circle" style="background:linear-gradient(90deg,#814DFE,#50A3FE)"><img src="assets/img/almacenamiento.png" alt=""></div>
+            <h4>Almacenamiento Seguro</h4>
+            <p class="desc">500 GB inicial con respaldos automáticos y HTTPS.</p>
+            <small class="small-click-front">Click para ver más</small>
+          </div>
+          <div class="face back">
+            <h4>Almacenamiento Seguro</h4>
+            <p>Infraestructura con backups y trazabilidad de accesos.</p>
+            <small class="small-click-back">Click para volver</small>
+          </div>
+        </div>
+
+        <!-- 5 Vista Previa en Línea -->
+        <div class="product-card" tabindex="0">
+          <div class="face front">
+            <div class="icon-circle" style="background:linear-gradient(90deg,#C726AA,#50A3FE)"><img src="assets/img/descargar.png" alt=""></div>
+            <h4>Vista Previa en Línea</h4>
+            <p class="desc">Visualiza documentos sin descarga y con marcadores personales.</p>
+            <small class="small-click-front">Click para ver más</small>
+          </div>
+          <div class="face back">
+            <h4>Vista Previa en Línea</h4>
+            <p>Visor integrado para PDF, presentaciones y código con seguridad.</p>
+            <small class="small-click-back">Click para volver</small>
+          </div>
+        </div>
+
+        <!-- 6 Métricas y Reportes -->
+        <div class="product-card" tabindex="0">
+          <div class="face front">
+            <div class="icon-circle" style="background:linear-gradient(90deg,#50A3FE,#C726AA)"><img src="assets/img/metricas.png" alt=""></div>
+            <h4>Métricas & Reportes</h4>
+            <p class="desc">Indicadores de uso: subidas, vistas, recursos oficiales por materia.</p>
+            <small class="small-click-front">Click para ver más</small>
+          </div>
+          <div class="face back">
+            <h4>Métricas & Reportes</h4>
+            <p>Exporta reportes CSV/PDF y analiza tendencias por materia y semestre.</p>
+            <small class="small-click-back">Click para volver</small>
+          </div>
+        </div>
+
+        <!-- 7 Acceso Multi-Rol -->
+        <div class="product-card" tabindex="0">
+          <div class="face front">
+            <div class="icon-circle" style="background:linear-gradient(90deg,#9021E9,#814DFE)"><img src="assets/img/multiRol.png" alt=""></div>
+            <h4>Acceso Multi-Rol</h4>
+            <p class="desc">Permisos para Estudiante, Docente, Gestor, Coordinación y TI.</p>
+            <small class="small-click-front">Click para ver más</small>
+          </div>
+          <div class="face back">
+            <h4>Acceso Multi-Rol</h4>
+            <p>Roles con permisos específicos y flujo de validación según rol.</p>
+            <small class="small-click-back">Click para volver</small>
+          </div>
+        </div>
+
+        <!-- 8 Control de Versiones -->
+        <div class="product-card" tabindex="0">
+          <div class="face front">
+            <div class="icon-circle" style="background:linear-gradient(90deg,#1C62F5,#C726AA)"><img src="assets/img/controlVersiones.png" alt=""></div>
+            <h4>Control de Versiones</h4>
+            <p class="desc">Historial de versiones, restauración y autoría fechada.</p>
+            <small class="small-click-front">Click para ver más</small>
+          </div>
+          <div class="face back">
+            <h4>Control de Versiones</h4>
+            <p>Registro completo de cambios con posibilidad de restaurar versiones previas.</p>
+            <small class="small-click-back">Click para volver</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+  <div class="container footer-grid">
+    
+    <!-- CONTACTO -->
+    <div class="col contacto">
+      <h4>Contacto</h4>
+      <p><img src="assets/img/ubicacion.png" alt="Ubicación" class="icon"> Universidad Privada del Valle<br/>Sede La Paz, Bolivia<br/>Carrera de Ingeniería de Sistemas<br/></p>
+      <p><img src="assets/img/contacto.png" alt="Teléfono" class="icon"> +591 6 9869998</p>
+      <p><img src="assets/img/correo.png" alt="Correo" class="icon"> datavault@univalle.edu</p>
+    </div>
+
+    <!-- UBICACIÓN -->
+    <div class="col ubicacion">
+      <h4>Ubicación</h4>
+      <div class="mapframe">
+        <iframe title="Mapa Universidad del Valle"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3825.3526738728906!2d-68.11931492474824!3d-16.498870984204424!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x915f2067f1a1a35f%3A0x4b6d8b0d6e5f6c7a!2sUniversidad%20del%20Valle%20La%20Paz!5e0!3m2!1ses!2sbo!4v1635789012345!5m2!1ses!2sbo"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+
+    <!-- SÍGUENOS -->
+    <div class="col redes">
+      <h4>Síguenos</h4>
+      <p class="desc-redes">Mantente al día con nuestras últimas novedades y actualizaciones.</p>
+      <div class="socials">
+        <a href="#"><img src="assets/img/facebook.png" alt="Facebook"></a>
+        <a href="#"><img src="assets/img/instagram.png" alt="Instagram"></a>
+        <a href="#"><img src="assets/img/whatsapp.png" alt="Whatsapp"></a>
+      </div>
+    </div>
+
+    <!-- FORMULARIO -->
+    <div class="col formulario">
+      <h4>Contáctanos</h4>
+      <form id="contact-form" class="contact-form">
+        <input name="name" placeholder="Tu nombre" required />
+        <input name="email" placeholder="Tu correo" type="email" required />
+        <textarea name="message" placeholder="Tu mensaje" rows="3" required></textarea>
+        <button class="btn-primary" type="submit">Enviar Mensaje</button>
+      </form>
+    </div>
+
+  </div>
+
+  <!-- COPYRIGHT -->
+  <div class="copyright">
+    © 2025 <strong>DataVault</strong> — Equipo de 4to Semestre ISI.<br>
+    Todos los derechos reservados. Proyecto académico de Ingeniería de Sistemas.
+  </div>
+</footer>
+
+  </main>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

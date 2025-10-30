@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login - DataVault</title>
+  <style>
+    :root{--font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+  </style>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="auth-bg">
+  <a href="index.html" class="back-floating">← Volver al inicio</a>
+
+  <main class="auth-main">
+    <div class="auth-card animated-pop">
+      <div class="brand-top">
+        <img src="assets/img/logoRep.jpg" class="small-logo" alt="DataVault">
+        <h2>Iniciar Sesión</h2>
+        <p class="muted">Accede al Repositorio DataVault</p>
+      </div>
+
+      <form id="login-form" class="form-auth" novalidate>
+        <label>Nombre completo
+          <input id="login-name" type="text" placeholder="Ej: Juan Pérez" required />
+          <span class="error" data-for="login-name"></span>
+        </label>
+
+        <label>Correo institucional
+          <input id="login-email" type="email" placeholder="usuario@est.univalle.edu" required />
+          <small class="note">Formato: usuario@est.univalle.edu</small>
+          <span class="error" data-for="login-email"></span>
+        </label>
+
+        <label>Contraseña
+          <div class="pwd-wrap">
+            <input id="login-password" type="password" placeholder="Mínimo 8 caracteres" required />
+            <button type="button" class="pwd-toggle" data-target="login-password" aria-label="Mostrar contraseña"><img src="assets/img/iniciarSesion.png" alt=""></button>
+          </div>
+          <span class="error" data-for="login-password"></span>
+        </label>
+
+        <label>Rol
+          <select id="login-role" required>
+            <option value="">Selecciona tu rol</option>
+            <option value="estudiante">Estudiante</option>
+            <option value="docente">Docente</option>
+            <option value="gestor">Gestor</option>
+            <option value="coordinacion">Coordinación</option>
+            <option value="ti">TI</option>
+          </select>
+          <span class="error" data-for="login-role"></span>
+        </label>
+
+        <button type="submit" class="btn-primary btn-block"><img src="assets/img/iniciarSesion.png" class="iconLoginSignUp">Iniciar Sesión</button>
+      </form>
+
+      <p class="muted center">¿No tienes cuenta? <a href="signup.html">Regístrate aquí</a></p>
+    </div>
+  </main>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
