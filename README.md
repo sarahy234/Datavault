@@ -21,7 +21,7 @@ Permite **búsqueda avanzada, control de versiones y validación institucional**
 
 ---
 
-##Equipo de Desarrollo
+## Equipo de Desarrollo
 | Integrante | Rol | Contacto
 |-------------|--------------|--------------|
 | Gianni Franco Calle Veliz	| Programador Back-End | cvg2029535@est.univalle.edu
