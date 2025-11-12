@@ -1,0 +1,225 @@
+﻿@model Repositorio.Models.Recurso
+@using Microsoft.AspNetCore.Identity
+@{
+    ViewData["Title"] = "Editar Recurso";
+}
+
+<!-- ENCABEZADO -->
+<header class="site-header">
+    <div class="container header-inner">
+        <a class="brand" href="@Url.Action("Index", "Coordinacion")" aria-label="DataVault">
+            <div class="logo-wrap">
+                <img src="@Url.Content("~/assets/img/logoRep.jpg")" alt="DataVault" class="logo-img">
+            </div>
+            <div class="brand-text">
+                <div class="title">DataVault</div>
+                <div class="subtitle">Coordinación</div>
+            </div>
+        </a>
+
+        <nav class="nav-desktop">
+            <button class="nav-btn" data-target="#acerca">Ayuda</button>
+            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
+                <button type="submit" class="nav-btn nav-login" title="Cerrar sesión">
+                    <img src="@Url.Content("~/assets/img/iniciarSesion.png")" alt="Cerrar Sesión" />
+                </button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<!-- CONTENIDO -->
+<section class="container">
+    <div class="edit-card animated-pop">
+        <h2 class="form-title"><i class="fas fa-edit"></i> Editar Recurso</h2>
+        <p class="form-subtitle">Modifica los datos del recurso y guarda los cambios.</p>
+
+        <form asp-action="Editar" method="post" class="edit-form">
+            <input type="hidden" asp-for="Id_Recurso" />
+
+            <div class="form-row">
+                <label for="Titulo">Título</label>
+                <input asp-for="Titulo" class="form-input" placeholder="Ingrese el título del recurso..." />
+            </div>
+
+            <div class="form-row">
+                <label for="Descripcion">Descripción</label>
+                <textarea asp-for="Descripcion" class="form-input" rows="3" placeholder="Agregue una breve descripción..."></textarea>
+            </div>
+
+            <div class="form-row">
+                <label for="Autor">Autor</label>
+                <input asp-for="Autor" class="form-input" placeholder="Nombre del autor..." />
+            </div>
+
+            <div class="form-row">
+                <label for="Semestre">Semestre</label>
+                <input asp-for="Semestre" class="form-input" placeholder="Ejemplo: 4to Semestre" />
+            </div>
+
+            <div class="form-row">
+                <label for="Estado">Estado</label>
+                <input asp-for="Estado" class="form-input" readonly />
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit" class="btn-save"><i class="fas fa-save"></i> Guardar Cambios</button>
+                <a asp-action="Index" class="btn-cancel"><i class="fas fa-times"></i> Cancelar</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+    <div class="container footer-grid">
+        <div class="col contacto">
+            <h4>Contacto</h4>
+            <p><img src="@Url.Content("~/assets/img/ubicacion.png")" alt="Ubicación" class="icon"> Universidad Privada del Valle<br />Sede La Paz, Bolivia</p>
+            <p><img src="@Url.Content("~/assets/img/contacto.png")" alt="Teléfono" class="icon"> +591 6 9869998</p>
+            <p><img src="@Url.Content("~/assets/img/correo.png")" alt="Correo" class="icon"> zsj2029754@est.univalle.edu</p>
+        </div>
+
+        <div class="col ubicacion">
+            <h4>Ubicación</h4>
+            <div class="mapframe">
+                <iframe title="Mapa Universidad del Valle"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3825.3526738728906!2d-68.11931492474824!3d-16.498870984204424!"
+                        loading="lazy"></iframe>
+            </div>
+        </div>
+
+        <div class="col redes">
+            <h4>Síguenos</h4>
+            <div class="socials">
+                <a href="https://www.facebook.com/univallelpz/?locale=es_LA"><img src="@Url.Content("~/assets/img/facebook.png")" alt="Facebook"></a>
+                <a href="https://www.instagram.com/univalle_lapaz/"><img src="@Url.Content("~/assets/img/instagram.png")" alt="Instagram"></a>
+                <a href="https://www.tiktok.com/@@univallelapaz"><img src="@Url.Content("~/assets/img/tik-tok.png")" alt="TikTok"></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="copyright">
+        © 2025 <strong>DataVault</strong> — Equipo de 4to Semestre ISI.<br>
+        Todos los derechos reservados.
+    </div>
+</footer>
+
+<!-- ESTILOS -->
+<style>
+    .edit-card {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(100, 90, 255, 0.1);
+        padding: 30px;
+        margin-top: 40px;
+    }
+
+    .form-title {
+        font-size: 1.6rem;
+        color: var(--c3);
+        margin-bottom: 5px;
+    }
+
+    .form-subtitle {
+        color: #6b7280;
+        margin-bottom: 25px;
+    }
+
+    .form-row {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 18px;
+    }
+
+        .form-row label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+    .form-input {
+        padding: 10px 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: all .25s ease;
+    }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--c4);
+            box-shadow: 0 0 0 2px rgba(100, 90, 255, 0.2);
+        }
+
+    .form-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .btn-save, .btn-cancel {
+        border: none;
+        border-radius: 10px;
+        padding: 10px 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-save {
+        background: linear-gradient(90deg,var(--c3),var(--c5));
+        color: white;
+    }
+
+        .btn-save:hover {
+            background: linear-gradient(90deg,var(--c4),var(--c3));
+            transform: translateY(-2px);
+        }
+
+    .btn-cancel {
+        background: #e5e7eb;
+        color: #374151;
+    }
+
+        .btn-cancel:hover {
+            background: #d1d5db;
+        }
+
+    .animated-pop {
+        animation: popIn .45s cubic-bezier(.2,.9,.3,1);
+    }
+
+    @@keyframes popIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(10px) scale(.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+
+    }
+</style>
+
+@section Scripts {
+    <script>
+        // Scroll suave al footer
+        document.querySelectorAll('.nav-btn[data-target="#acerca"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const contacto = document.querySelector('#contacto');
+                if (contacto) contacto.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">

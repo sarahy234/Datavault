@@ -1,6 +1,704 @@
-﻿@{
-    ViewData["Title"] = "Panel Coordinacion";
+﻿@model Repositorio.Models.ViewModels.CoordinacionIndexViewModel
+@{
+    ViewData["Title"] = "Repositorio de Coordinación";
 }
 
-<h1>Bienvenido panel de coordinacion</h1>
-<p>Esto es una prueba de login con EF Core.</p>
+<!-- BARRA SUPERIOR -->
+<header class="site-header">
+    <div class="container header-inner">
+        <a class="brand" href="#" aria-label="DataVault">
+            <div class="logo-wrap" id="logo-wrap" title="DataVault">
+                <img src="@Url.Content("~/assets/img/logoRep.jpg")" alt="DataVault" class="logo-img">
+            </div>
+            <div class="brand-text">
+                <div class="title">DataVault</div>
+                <div class="subtitle">@Model.Cargo</div>
+            </div>
+        </a>
+
+        <nav class="nav-desktop">
+            <button class="nav-btn" data-target="#contacto">Ayuda</button>
+            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
+                <button type="submit" class="nav-btn nav-login" title="Cerrar sesión">
+                    <img src="@Url.Content("~/assets/img/iniciarSesion.png")" alt="Cerrar Sesión" />
+                </button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<section class="container">
+    <!-- PERFIL DEL COORDINADOR -->
+    <div class="student-profile-card animated-pop">
+        <div class="profile-header">
+            <div class="profile-avatar"><i class="fas fa-user-tie"></i></div>
+            <div class="profile-text">
+                <h2>¡Bienvenido, <span class="profile-name">@Model.ProfileName</span>!</h2>
+                <p class="profile-subtitle">@Model.Cargo</p>
+            </div>
+        </div>
+        <div class="profile-info">
+            <div class="info-box">
+                <div class="info-icon"><i class="fas fa-envelope"></i></div>
+                <div class="info-content">
+                    <span class="info-label">Correo</span>
+                    <span class="info-value">@Model.ProfileCorreo</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- REPOSITORIO -->
+    <h2 class="repo-title">Repositorio de Materiales</h2>
+    <p class="repo-subtitle">Gestiona todos los recursos académicos</p>
+
+    <!-- FILTROS -->
+    <form method="get" asp-action="Index" id="formFiltros" class="filters animated-pop">
+        <div class="filter-group">
+            <div class="filter-row search-row">
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" name="search" value="@Model.Search"
+                           placeholder="Buscar por título, descripción o palabras clave..."
+                           class="filter-input search-bar" />
+                </div>
+            </div>
+            <div class="filter-row filters-row">
+                <select name="materia" class="filter-select">
+                    <option value="">Todas las materias</option>
+                    @foreach (var m in Model.Materias)
+                    {
+                        <option value="@m" selected="@(m == Model.SelectedMateria ? "selected" : null)">@m</option>
+                    }
+                </select>
+                <select name="semestre" class="filter-select">
+                    <option value="">Todos los semestres</option>
+                    @foreach (var s in Model.Semestres)
+                    {
+                        <option value="@s" selected="@(s == Model.SelectedSemestre ? "selected" : null)">@s</option>
+                    }
+                </select>
+                <select name="tipo" class="filter-select">
+                    <option value="">Todos los tipos</option>
+                    @foreach (var t in Model.Tipos)
+                    {
+                        <option value="@t" selected="@(t == Model.SelectedTipo ? "selected" : null)">@t</option>
+                    }
+                </select>
+                <input type="text" name="autor" value="@Model.SelectedAutor" placeholder="Autor" class="filter-input" />
+            </div>
+            <div class="filter-row buttons-row">
+                <button type="submit" class="btn-search"><i class="fas fa-search"></i> Buscar</button>
+                <button type="button" id="btnLimpiar" class="btn-clear"><i class="fas fa-broom"></i> Limpiar</button>
+            </div>
+        </div>
+    </form>
+
+    <p class="results-info">Mostrando <strong>@Model.Recursos.Count</strong> de <strong>@Model.TotalItems</strong> resultados.</p>
+
+    <!-- TABLA -->
+    <div class="table-container animated-pop">
+        <table class="repo-table">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Autor</th>
+                    <th>Materia</th>
+                    <th>Tipo</th>
+                    <th>Semestre</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Recursos.Any())
+                {
+                    <tr><td colspan="8" class="no-results">No se encontraron recursos.</td></tr>
+                }
+                else
+                {
+                    foreach (var r in Model.Recursos)
+                    {
+                        <tr class="resource-row">
+                            <td>@r.Titulo</td>
+                            <td>@r.Autor</td>
+                            <td>@r.MateriaPrincipal</td>
+                            <td><span class="badge-type">@r.TipoRecurso</span></td>
+                            <td>@r.Semestre</td>
+                            <td>@r.Fecha_Subida.ToString("yyyy-MM-dd")</td>
+                            <td><span class="badge-status">@r.Estado</span></td>
+                            <td>
+                                <a asp-controller="Coordinacion" asp-action="Editar" asp-route-id="@r.Id_Recurso" class="btn-download"><i class="fas fa-edit"></i></a>
+                                <form asp-controller="Coordinacion" asp-action="CambiarEstado" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="@r.Id_Recurso" />
+                                    <select name="nuevoEstado" onchange="this.form.submit()" class="filter-select" style="width:120px;">
+                                        <option value="Pendiente" selected="@(r.Estado == "Pendiente" ? "selected" : null)">Pendiente</option>
+                                        <option value="Oficial" selected="@(r.Estado == "Oficial" ? "selected" : null)">Oficial</option>
+                                        <option value="Archivado" selected="@(r.Estado == "Archivado" ? "selected" : null)">Archivado</option>
+                                    </select>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+    <div class="container footer-grid">
+        <div class="col contacto">
+            <h4>Contacto</h4>
+            <p><img src="@Url.Content("~/assets/img/ubicacion.png")" alt="Ubicación" class="icon"> Universidad Privada del Valle<br />Sede La Paz, Bolivia</p>
+            <p><img src="@Url.Content("~/assets/img/contacto.png")" alt="Teléfono" class="icon"> +591 6 9869998</p>
+            <p><img src="@Url.Content("~/assets/img/correo.png")" alt="Correo" class="icon"> zsj2029754@est.univalle.edu</p>
+        </div>
+
+        <div class="col ubicacion">
+            <h4>Ubicación</h4>
+            <div class="mapframe">
+                <iframe title="Mapa Universidad del Valle"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3825.3526738728906!2d-68.11931492474824!3d-16.498870984204424!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x915f2067f1a1a35f%3A0x4b6d8b0d6e5f6c7a!2sUniversidad%20del%20Valle%20La%20Paz!5e0!3m2!1ses!2sbo!4v1635789012345!5m2!1ses!2sbo"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+
+        <div class="col redes">
+            <h4>Síguenos</h4>
+            <div class="socials">
+                <a href="https://www.facebook.com/univallelpz/?locale=es_LA" title="Ver Facebook">
+                    <img src="@Url.Content("~/assets/img/facebook.png")" alt="Facebook">
+                </a>
+                <a href="https://www.instagram.com/univalle_lapaz/" title="Ver Instagram">
+                    <img src="@Url.Content("~/assets/img/instagram.png")" alt="Instagram">
+                </a>
+                <a href="https://www.tiktok.com/@@univallelapaz" title="Ver tiktok">
+                    <img src="@Url.Content("~/assets/img/tik-tok.png")" alt="TikTok ">
+                </a>
+            </div>
+        </div>
+
+        <section id="contacto">
+            <div class="col formulario">
+                <h4>Contáctanos</h4>
+                <form id="contact-form" class="contact-form">
+                    <input name="name" placeholder="Tu nombre" required />
+                    <input name="email" placeholder="Tu correo" type="email" required />
+                    <textarea name="message" placeholder="Tu mensaje" rows="3" required></textarea>
+                    <button class="btn-primary" type="submit">Enviar Mensaje</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <div class="copyright">
+        © 2025 <strong>DataVault</strong> — Equipo de 4to Semestre ISI.<br>
+        Todos los derechos reservados. Proyecto académico de Ingeniería de Sistemas.
+    </div>
+</footer>
+
+@section Scripts {
+    <script>
+        const form = document.getElementById("formFiltros");
+        const inputs = form.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('change', () => form.submit());
+            input.addEventListener('keyup', e => { if (e.key === "Enter") form.submit(); });
+        });
+        document.getElementById("btnLimpiar").addEventListener("click", function () {
+            form.querySelectorAll('input, select').forEach(el => el.value = "");
+            form.submit();
+        });
+
+        document.querySelectorAll('.nav-btn[data-target="#contacto"]').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const contacto = document.querySelector('#contacto');
+                if (contacto) {
+                    contacto.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    /* NAVBAR */
+
+    .nav-btn.nav-login {
+        padding: 10px; /* más pequeño para el ícono */
+        border-radius: 50%; /* redondo */
+        background: rgba(255,255,255,0.1); /* fondo sutil */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.25s ease;
+    }
+
+        .nav-btn.nav-login:hover {
+            background: rgba(255,255,255,0.25); /* más visible al pasar el mouse */
+            transform: translateY(-2px);
+        }
+
+        /* Imagen del ícono dentro */
+        .nav-btn.nav-login img {
+            width: 20px;
+            height: 20px;
+            border-radius: 30%; /* también redondeado */
+            object-fit: cover;
+        }
+
+    .sub-navbar {
+        background: linear-gradient(90deg,var(--c3),var(--c5));
+        box-shadow: var(--shadow);
+        padding: 12px 0;
+        color: white;
+    }
+
+    .nav-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .nav-logo {
+        display: flex;
+        align-items: center;
+        font-weight: 700;
+        font-size: 20px;
+        gap: 8px;
+    }
+
+    .nav-links a {
+        margin: 0 10px;
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: .3s;
+    }
+
+        .nav-links a:hover, .nav-links .active {
+            color: var(--c8);
+            border-bottom: 2px solid var(--c8);
+            padding-bottom: 4px;
+        }
+
+    .nav-user {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+    }
+
+        .nav-user i {
+            color: var(--white);
+        }
+
+        .nav-user a {
+            color: var(--white);
+            transition: .3s;
+        }
+
+            .nav-user a:hover {
+                color: var(--c8);
+            }
+
+    /* PERFIL */
+    .student-card {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        background: white;
+        border-radius: var(--radius);
+        padding: 20px;
+        box-shadow: var(--shadow);
+        margin-top: 30px;
+    }
+
+    .student-avatar {
+        background: linear-gradient(90deg,var(--c3),var(--c5));
+        color: white;
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+    }
+
+    .highlight {
+        color: var(--c3);
+        font-weight: 700;
+    }
+
+    .student-subtitle {
+        color: #6b7280;
+        margin-top: 4px;
+    }
+
+    .student-details {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-top: 10px;
+        font-size: 14px;
+        color: #374151;
+    }
+
+        .student-details i {
+            color: var(--c5);
+            margin-right: 5px;
+        }
+
+    /* Tarjeta principal del perfil */
+    .student-profile-card {
+        background: linear-gradient(145deg, #ffffff 0%, #f7f8ff 100%);
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(120, 100, 255, 0.12);
+        padding: 24px 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+        margin-top: 30px;
+    }
+
+    /* Cabecera (avatar + nombre) */
+    .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .profile-avatar {
+        background: linear-gradient(135deg, #6a11cb, #2575fc); /* Morado → Azul */
+        color: #fff;
+        width: 60px;
+        height: 60px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        box-shadow: 0 6px 20px rgba(100, 90, 255, 0.25);
+    }
+
+    .profile-text h2 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #6a11cb;
+        margin: 0;
+    }
+
+    .profile-name {
+        color: #6a11cb;
+        font-weight: 700;
+    }
+
+    .profile-subtitle {
+        color: #666;
+        font-size: 0.95rem;
+    }
+
+    /* Cuadros informativos (Carrera, Semestre, Correo) */
+    .profile-info {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        justify-content: flex-start;
+    }
+
+    .info-box {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: rgba(241 238 238 / 70%);
+        border: 1px solid rgba(100, 80, 255, 0.15);
+        border-radius: 14px;
+        padding: 14px 20px;
+        flex: 1 1 270px;
+        min-width: 250px;
+        box-shadow: 0 4px 12px rgba(180, 160, 255, 0.1);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+
+        .info-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(100, 90, 255, 0.15);
+        }
+
+    /* Ícono dentro de cada cuadro */
+    .info-icon {
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: #fff;
+        border-radius: 10px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        flex-shrink: 0;
+        box-shadow: 0 3px 10px rgba(100, 90, 255, 0.3);
+    }
+
+    /* Texto */
+    .info-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .info-label {
+        font-size: 0.8rem;
+        color: #6b6b7a;
+        font-weight: 500;
+    }
+
+    .info-value {
+        font-weight: 600;
+        color: #2b2b3a;
+    }
+
+    /* Animación suave */
+    .animated-pop {
+        animation: popIn 0.45s cubic-bezier(.2, .9, .3, 1);
+    }
+
+    @@keyframes popIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px) scale(0.98);
+        }
+
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .profile-info {
+            flex-direction: column;
+        }
+    }
+
+
+
+    /* REPOSITORIO Y TABLA */
+
+    /* Contenedor para ícono e input */
+    .search-wrapper {
+        position: relative;
+        width: 100%;
+    }
+
+        /* Ícono dentro del input */
+        .search-wrapper i {
+            position: absolute;
+            left: 12px; /* distancia desde el borde izquierdo */
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af; /* gris clarito, puedes cambiar */
+            font-size: 16px;
+            pointer-events: none; /* evita que bloquee clics en el input */
+        }
+
+        /* Espacio interior del input para que no tape el texto */
+        .search-wrapper .search-bar {
+            width: 100%;
+            padding-left: 38px; /* da espacio para el ícono */
+        }
+
+    .repo-title {
+        color: var(--c1);
+        margin-top: 30px;
+        font-size: 22px;
+    }
+
+    .repo-subtitle {
+        color: #6b7280;
+        margin-bottom: 30px;
+    }
+
+    .results-info {
+        margin-top: 30px;
+    }
+
+    .filters {
+        background: white;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 20px;
+    }
+
+    /* --- NUEVO --- */
+    .filter-group {
+        display: flex;
+        flex-direction: column; /* ahora se apilan en columnas */
+        gap: 15px; /* espacio entre filas */
+    }
+
+    /* Cada fila */
+    .filter-row {
+        display: flex;
+        gap: 10px;
+        width: 100%;
+    }
+
+    /* Barra de búsqueda ocupa todo el ancho */
+    .search-row .search-bar {
+        width: 100%;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        color: black;
+    }
+
+    /* Los 4 filtros distribuidos en una sola fila */
+    .filters-row .filter-select,
+    .filters-row .filter-input {
+        flex: 1;
+        min-width: 0;
+    }
+
+    /* Botones alineados horizontalmente */
+    .buttons-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Mantiene tus estilos originales intactos */
+    .filter-input, .filter-select {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        flex: 1;
+        min-width: 180px;
+    }
+
+    .btn-search, .btn-clear {
+        border: none;
+        border-radius: 10px;
+        padding: 10px 16px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all .3s ease;
+    }
+
+    .btn-search {
+        background: linear-gradient(90deg,var(--c3),var(--c5));
+        color: white;
+        width: 85%;
+    }
+
+        .btn-search:hover {
+            background: linear-gradient(90deg,var(--c4),var(--c3));
+            transform: translateY(-2px);
+        }
+
+    .btn-clear {
+        background: #e5e7eb;
+        color: #374151;
+        width: 13%;
+    }
+
+        .btn-clear:hover {
+            background: #d1d5db;
+        }
+
+    .table-container {
+        overflow-x: auto;
+        margin-top: 20px;
+        background: white;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+    }
+
+    .repo-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .repo-table thead tr {
+            background: linear-gradient(90deg,var(--c3),var(--c5));
+            color: white;
+        }
+
+        .repo-table th, .repo-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #f3f4f6;
+            text-align: left;
+        }
+
+    .resource-row {
+        transition: .25s;
+    }
+
+        .resource-row:hover {
+            background: rgba(144,33,233,0.07);
+            transform: scale(1.01);
+        }
+
+    .title-link {
+        color: var(--c1);
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+        .title-link:hover {
+            color: var(--c5);
+        }
+
+    .badge-type {
+        background: rgba(28,98,245,0.12);
+        color: var(--c3);
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .badge-status {
+        background: rgba(16,185,129,0.12);
+        color: #059669;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 13px;
+    }
+
+    .btn-download {
+        background: linear-gradient(90deg,var(--c3),var(--c5));
+        color: white;
+        border-radius: 8px;
+        padding: 8px 10px;
+        display: inline-block;
+        transition: all .25s ease;
+    }
+
+        .btn-download:hover {
+            background: linear-gradient(90deg,var(--c4),var(--c3));
+            transform: translateY(-2px);
+        }
+
+    .animated-pop {
+        animation: popIn .45s cubic-bezier(.2,.9,.3,1);
+    }
+
+    @@keyframes popIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px) scale(.98);
+        }
+
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+</style>
