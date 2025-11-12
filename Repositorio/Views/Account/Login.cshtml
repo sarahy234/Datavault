@@ -1,0 +1,166 @@
+﻿@model Repositorio.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login - Repositorio";
+    var fieldErrors = ViewBag.FieldErrors as System.Collections.Generic.Dictionary<string, string>;
+    int lockSeconds = ViewBag.LockRemainingSeconds != null ? (int)ViewBag.LockRemainingSeconds : 0;
+    string lockMessage = ViewBag.LockMessage ?? "";
+}
+
+<div class="auth-bg">
+    <a asp-controller="Home" asp-action="Index" class="back-floating">← Volver al inicio</a>
+
+    <main class="auth-main">
+        <div class="auth-card animated-pop">
+            <div class="brand-top">
+                <img src="~/assets/img/logoRep.jpg" class="small-logo" alt="Repositorio">
+                <h2>Iniciar Sesión</h2>
+                <p class="muted">Accede al Repositorio DataVault</p>
+            </div>
+
+            @* Alerta superior (bloqueo) *@
+            @if (lockSeconds > 0)
+            {
+                <div id="dvAlert" class="dv-inline-alert error" role="alert">
+                    <div>
+                        <div style="font-weight:700;">@lockMessage</div>
+                        <div style="margin-top:6px; font-size:13px; color:#7a0f0f;">
+                            Tiempo restante: <span id="lockTimerDisplay">00:00</span>
+                        </div>
+                    </div>
+                    <button class="close-x" onclick="document.getElementById('dvAlert').style.display='none'">✕</button>
+                </div>
+            }
+
+            <form asp-action="Login" method="post" class="form-auth" novalidate>
+                @Html.AntiForgeryToken()
+
+                <label for="Nombre">
+                    Nombre completo
+                    <input asp-for="Nombre" id="Nombre" />
+                    <span class="field-error">@((fieldErrors != null && fieldErrors.ContainsKey("Nombre")) ? fieldErrors["Nombre"] : "")</span>
+                </label>
+
+                <label for="Correo">
+                    Correo institucional
+                    <input asp-for="Correo" id="Correo" type="email" />
+                    <small class="note">Formato: usuario@est.univalle.edu</small>
+                    <span class="field-error">@((fieldErrors != null && fieldErrors.ContainsKey("Correo")) ? fieldErrors["Correo"] : "")</span>
+                </label>
+
+                <label for="Contrasena">
+                    Contraseña
+                    <div class="pwd-wrap">
+                        <input asp-for="Contrasena" id="Contrasena" type="password" />
+                        <button type="button" class="pwd-toggle" data-target="Contrasena" aria-label="Mostrar contraseña">
+                            <img src="~/assets/img/iniciarSesion.png" alt="Mostrar">
+                        </button>
+                    </div>
+                    <span class="field-error">@((fieldErrors != null && fieldErrors.ContainsKey("Contrasena")) ? fieldErrors["Contrasena"] : "")</span>
+                </label>
+
+                <label for="Rol">
+                    Rol
+                    <select asp-for="Rol" id="Rol">
+                        <option value="">Selecciona tu rol</option>
+                        <option value="Estudiante">Estudiante</option>
+                        <option value="Docente">Docente</option>
+                        <option value="Gestor">Gestor</option>
+                        <option value="Coordinacion">Coordinación</option>
+                        <option value="TI">TI</option>
+                    </select>
+                    <span class="field-error">@((fieldErrors != null && fieldErrors.ContainsKey("Rol")) ? fieldErrors["Rol"] : "")</span>
+                </label>
+
+                <button type="submit" class="btn-primary btn-block">
+                    <img src="~/assets/img/iniciarSesion.png" class="iconLoginSignUp" /> Iniciar Sesión
+                </button>
+            </form>
+
+            <p class="muted center">
+                ¿No tienes cuenta? <a asp-controller="Account" asp-action="Signup">Regístrate aquí</a>
+            </p>
+        </div>
+    </main>
+</div>
+
+<style>
+    /* Mantener estilos pequeños aquí para que funcione igual que el signup */
+    .dv-inline-alert {
+        margin: 12px auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        box-shadow: 0 8px 30px rgba(2,6,23,0.06);
+        font-weight: 600;
+        width: calc(100% - 40px);
+        max-width: 640px;
+        font-size: 15px;
+    }
+
+        .dv-inline-alert.info {
+            background: rgba(255,250,235,0.98);
+            color: #924b00;
+            border: 1px solid rgba(245,158,11,0.12);
+        }
+
+
+        .dv-inline-alert .close-x {
+            cursor: pointer;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+        }
+
+    .field-error {
+        display: block;
+        margin-top: 6px;
+        color: #ef4444;
+        font-size: 13px;
+    }
+</style>
+
+<script src="~/js/script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
+<script>
+    // Toggle password visibility
+    document.querySelectorAll('.pwd-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const input = document.getElementById(btn.dataset.target);
+            if (!input) return;
+            input.type = input.type === 'password' ? 'text' : 'password';
+        });
+    });
+
+    // Temporizador: lockSeconds viene desde Razor serializado con JSON-safe
+    var lockSeconds = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(lockSeconds));
+    if (typeof lockSeconds === 'number' && lockSeconds > 0) {
+        var display = document.getElementById('lockTimerDisplay');
+        if (display) {
+            function formatTime(s) {
+                var mm = Math.floor(s / 60);
+                var ss = s % 60;
+                return String(mm).padStart(2,'0') + ':' + String(ss).padStart(2,'0');
+            }
+            display.textContent = formatTime(lockSeconds);
+            var interval = setInterval(function () {
+                lockSeconds--;
+                if (lockSeconds <= 0) {
+                    clearInterval(interval);
+                    var el = document.getElementById('dvAlert');
+                    if (el) el.style.display = 'none';
+                    return;
+                }
+                display.textContent = formatTime(lockSeconds);
+            }, 1000);
+        }
+    }
+</script>

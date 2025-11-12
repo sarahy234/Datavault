@@ -1,0 +1,218 @@
+﻿@{
+    ViewData["Title"] = "Registro de Usuario - DataVault";
+    var suRoleVal = (ViewData["suRole"] ?? "").ToString();
+    var suNameVal = (ViewData["suName"] ?? "").ToString();
+    var suEmailVal = (ViewData["suEmail"] ?? "").ToString();
+    var suTermsVal = ((ViewData["suTerms"] ?? "").ToString().ToLower() == "true");
+    var fieldErrors = ViewBag.FieldErrors as System.Collections.Generic.Dictionary<string, string>;
+}
+
+<style>
+    .dv-inline-alert {
+        margin: 12px auto 18px auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        box-shadow: 0 8px 30px rgba(2,6,23,0.06);
+        font-weight: 600;
+        width: calc(100% - 40px);
+        max-width: 640px;
+        font-size: 15px;
+    }
+
+        .dv-inline-alert.error {
+            background: rgba(255,245,245,0.98);
+            color: #7a0f0f;
+            border: 1px solid rgba(239,68,68,0.12);
+        }
+
+        .dv-inline-alert.info {
+            background: rgba(255,250,235,0.98);
+            color: #924b00;
+            border: 1px solid rgba(245,158,11,0.12);
+        }
+
+        .dv-inline-alert.success {
+            background: rgba(240,255,249,0.98);
+            color: #0b6b48;
+            border: 1px solid rgba(16,185,129,0.12);
+        }
+
+        .dv-inline-alert .close-x {
+            cursor: pointer;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+        }
+
+    .auth-card {
+        font-family: inherit;
+        font-size: 14px;
+    }
+
+    .field-error {
+        display: block;
+        margin-top: 6px;
+        color: #ef4444;
+        font-size: 13px;
+    }
+</style>
+
+<div class="auth-bg">
+    <a asp-controller="Home" asp-action="Index" class="back-floating">← Volver al inicio</a>
+    <section class="auth-section">
+        <main class="auth-main">
+            <div class="auth-card animated-pop">
+                <header class="brand-top">
+                    <img src="~/assets/img/logoRep.jpg" class="small-logo" alt="DataVault">
+                    <h2>Registro de Usuario</h2>
+                    <p class="muted">Únete al Repositorio DataVault</p>
+                </header>
+
+                @* Mensajes globales solo para éxito o info *@
+                @if (ViewBag.Exito != null)
+                {
+                    <div id="dvAlert" class="dv-inline-alert success" role="status">
+                        <div>@ViewBag.Exito</div>
+                        <button class="close-x" onclick="document.getElementById('dvAlert').style.display='none'">✕</button>
+                    </div>
+                }
+                else if (ViewBag.Info != null)
+                {
+                    <div id="dvAlert" class="dv-inline-alert info" role="status">
+                        <div>@ViewBag.Info</div>
+                        <button class="close-x" onclick="document.getElementById('dvAlert').style.display='none'">✕</button>
+                    </div>
+                }
+
+                <form id="signup-form" class="form-auth" method="post" asp-action="Signup" novalidate>
+                    @Html.AntiForgeryToken()
+
+                    <label for="su-name">
+                        Nombre completo
+                        <input id="su-name" name="suName" type="text" placeholder="Ej: JosiasZarate" required value="@(suNameVal)" />
+                        <span class="error field-error">@(fieldErrors != null && fieldErrors.ContainsKey("su-name") ? fieldErrors["su-name"] : "")</span>
+                    </label>
+
+                    <label for="su-email">
+                        Correo institucional
+                        <input id="su-email" name="suEmail" type="email" placeholder="usuario@est.univalle.edu" required value="@(suEmailVal)" />
+                        <small class="note">Formato: usuario@est.univalle.edu </small>
+                        <span class="error field-error">@(fieldErrors != null && fieldErrors.ContainsKey("su-email") ? fieldErrors["su-email"] : "")</span>
+                    </label>
+
+                    <label for="su-password">
+                        Contraseña
+                        <div class="pwd-wrap">
+                            <input id="su-password" name="suPassword" type="password" placeholder="Crea una contraseña segura" required />
+                            <button type="button" class="pwd-toggle" data-target="su-password" aria-label="Mostrar contraseña">
+                                <img src="~/assets/img/ojo.png" alt="Mostrar contraseña">
+                            </button>
+                        </div>
+                        <span class="error field-error">@(fieldErrors != null && fieldErrors.ContainsKey("su-password") ? fieldErrors["su-password"] : "")</span>
+                    </label>
+
+                    <label for="su-confirm">
+                        Confirmar Contraseña
+                        <div class="pwd-wrap">
+                            <input id="su-confirm" name="suConfirm" type="password" placeholder="Repite tu contraseña" required />
+                            <button type="button" class="pwd-toggle" data-target="su-confirm" aria-label="Mostrar contraseña">
+                                <img src="~/assets/img/ojo.png" alt="Mostrar contraseña">
+                            </button>
+                        </div>
+                        <span class="error field-error">@(fieldErrors != null && fieldErrors.ContainsKey("su-confirm") ? fieldErrors["su-confirm"] : "")</span>
+                    </label>
+
+                    <div id="password-hints" class="password-hints">
+                        <div id="h-length" class="hint">• 8+ caracteres</div>
+                        <div id="h-upper" class="hint">• Al menos una mayúscula</div>
+                        <div id="h-lower" class="hint">• Al menos una minúscula</div>
+                        <div id="h-number" class="hint">• Al menos un número</div>
+                        <div id="h-symbol" class="hint">• Al menos un símbolo</div>
+                    </div>
+
+                    <label for="su-role">
+                        Rol
+                        <select id="su-role" name="suRole" required>
+                            <option value="">Selecciona tu rol</option>
+                            <option value="Estudiante">Estudiante</option>
+                            <option value="Docente">Docente</option>
+                            <option value="Gestor">Gestor</option>
+                            <option value="Coordinacion">Coordinación</option>
+                            <option value="TI">TI</option>
+                        </select>
+                        <span class="error field-error">@(fieldErrors != null && fieldErrors.ContainsKey("su-role") ? fieldErrors["su-role"] : "")</span>
+                    </label>
+
+                    <label class="terms">
+                        <input id="su-terms" name="suTerms" type="checkbox" value="true" @(suTermsVal ? "checked" : "") />
+                        Acepto los términos y condiciones del Repositorio DataVault y el uso de datos institucionales
+                    </label>
+                    <span class="error field-error">@(fieldErrors != null && fieldErrors.ContainsKey("su-terms") ? fieldErrors["su-terms"] : "")</span>
+
+                    <button type="submit" class="btn-primary btn-block">
+                        <img src="~/assets/img/CrearCuenta.png" class="iconLoginSignUp" /> Crear Cuenta
+                    </button>
+                </form>
+
+                <footer>
+                    <p class="muted center">¿Ya tienes cuenta? <a asp-controller="Account" asp-action="Login">Inicia sesión aquí</a></p>
+                </footer>
+            </div>
+        </main>
+    </section>
+</div>
+
+<script>
+    (function () {
+        const form = document.getElementById('signup-form');
+        if (form) {
+            form.addEventListener('submit', function () {
+                const nameEl = document.getElementById('su-name');
+                const emailEl = document.getElementById('su-email');
+                if (nameEl) nameEl.value = nameEl.value.replace(/\s+/g, '');
+                if (emailEl) emailEl.value = emailEl.value.replace(/\s+/g, '');
+            });
+        }
+
+        const hints = {
+            length: document.getElementById('h-length'),
+            upper: document.getElementById('h-upper'),
+            lower: document.getElementById('h-lower'),
+            number: document.getElementById('h-number'),
+            symbol: document.getElementById('h-symbol')
+        };
+        const suPassword = document.getElementById('su-password');
+        if (suPassword) {
+            suPassword.addEventListener('input', (e) => {
+                const v = e.target.value;
+                toggleHint(hints.length, v.length >= 8);
+                toggleHint(hints.upper, /[A-Z]/.test(v));
+                toggleHint(hints.lower, /[a-z]/.test(v));
+                toggleHint(hints.number, /[0-9]/.test(v));
+                toggleHint(hints.symbol, /[^\da-zA-Z]/.test(v));
+            });
+        }
+        function toggleHint(elem, ok) { if (!elem) return; elem.classList.toggle('ok', ok); }
+
+        const roleFromServer = '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(suRoleVal))';
+        if (roleFromServer) {
+            const sel = document.getElementById('su-role');
+            if (sel) sel.value = roleFromServer;
+        }
+
+        const alertEl = document.getElementById('dvAlert');
+        if (alertEl && alertEl.classList.contains('success')) {
+            setTimeout(() => { window.location.href = '@Url.Action("Login", "Account")'; }, 2000);
+        }
+        if (alertEl && alertEl.classList.contains('info')) {
+            setTimeout(() => { window.location.href = '@Url.Action("Index", "Home")'; }, 2500);
+        }
+    })();
+</script>

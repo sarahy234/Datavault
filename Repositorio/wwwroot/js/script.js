@@ -37,42 +37,101 @@ qsa('.nav-btn').forEach(btn => {
 
 /* ====== CAROUSEL MULTI-SLIDE (imagen + texto + icono) ====== */
 (function carouselFull() {
-    const slidesData = [
-        { title: 'Repositorio Digital de Material Académico', description: 'Centraliza, organiza y preserva los materiales académicos de la carrera de Ingeniería de Sistemas — Universidad del Valle, La Paz.', icon: 'assets/img/libro.png', image: 'assets/img/carrusel1.jpg', overlay: '' },
-        { title: 'Acceso Fácil y Rápido', description: 'Busca y encuentra materiales académicos con filtros avanzados por materia, semestre, autor y palabras clave.', icon: 'assets/img/buscar.png', image: 'assets/img/carrusel2.jpg' },
-        { title: 'Comparte tu Conocimiento', description: 'Docentes y estudiantes pueden cargar recursos en formatos PDF, PPTX, DOCX, ZIP y código fuente.', icon: 'assets/img/descargar.png', image: 'assets/img/carrusel4.jpg' },
-        { title: 'Validación Institucional', description: 'Control de versiones y validación de contenido garantiza la calidad y confiabilidad de los recursos compartidos.', icon: 'assets/img/validacion.png', image: 'assets/img/carrusel3.jpg' }
+    // helpers: no sobrescribimos qs/qsa si ya existen globalmente
+    const _qs = window.qs || function (sel, root = document) { return (root || document).querySelector(sel); };
+    const _qsa = window.qsa || function (sel, root = document) { return Array.from((root || document).querySelectorAll(sel)); };
+    const qs = _qs;
+    const qsa = _qsa;
+
+    // array base con textos (rutas aquí son solo fallback; preferimos tomar rutas desde el DOM)
+    const baseSlidesData = [
+        {
+            title: 'Repositorio Digital de Material Académico',
+            description: 'Centraliza, organiza y preserva los materiales académicos de la carrera de Ingeniería de Sistemas — Universidad del Valle, La Paz.',
+            icon: '/assets/img/libro.png',
+            image: '/assets/img/carrusel1.jpg',
+            overlay: ''
+        },
+        {
+            title: 'Acceso Fácil y Rápido',
+            description: 'Busca y encuentra materiales académicos con filtros avanzados por materia, semestre, autor y palabras clave.',
+            icon: '/assets/img/buscar.png',
+            image: '/assets/img/carrusel2.jpg'
+        },
+        {
+            title: 'Comparte tu Conocimiento',
+            description: 'Docentes y estudiantes pueden cargar recursos en formatos PDF, PPTX, DOCX, ZIP y código fuente.',
+            icon: '/assets/img/descargar.png',
+            image: '/assets/img/carrusel4.jpg'
+        },
+        {
+            title: 'Validación Institucional',
+            description: 'Control de versiones y validación de contenido garantiza la calidad y confiabilidad de los recursos compartidos.',
+            icon: '/assets/img/validacion.png',
+            image: '/assets/img/carrusel3.jpg'
+        }
     ];
 
-    const slidesNodes = qsa('.slide');
+    // DOM nodes
+    let slidesNodes = qsa('.slide');
     const dotsWrap = qs('.hero-dots');
     const leftBtn = qs('.hero-arrow.left');
     const rightBtn = qs('.hero-arrow.right');
-    const heroTitle = document.querySelector('.hero-left h1');
-    const heroDesc = document.querySelector('.hero-left .lead');
-    const heroIcon = document.querySelector('.hero-icon');
+    const heroTitle = qs('.hero-left h1');
+    const heroDesc = qs('.hero-left .lead');
+    const heroIcon = qs('.hero-icon');
 
-    let idx = 0;
-    let timer = null;
-    const INTERVAL = 4000;
+    // Build slidesData using DOM-provided URLs when possible
+    const slidesData = baseSlidesData.map((base, i) => {
+        // try to get data-src from the existing .slide element (Razor should have put @Url.Content into data-src)
+        const slideEl = slidesNodes[i];
+        const domImage = slideEl ? slideEl.getAttribute('data-src') : null;
 
-    slidesNodes.forEach((s, i) => {
-        const src = s.getAttribute('data-src') || (slidesData[i] && slidesData[i].image);
-        if (src) s.style.backgroundImage = `url('${src}')`;
+        // try to get icon from hidden imgs with ids icono1..iconoN if present
+        const iconEl = document.getElementById(`icono${i + 1}`);
+        const domIcon = iconEl ? iconEl.src : null;
+
+        return {
+            title: base.title,
+            description: base.description,
+            // prefer DOM values (which will be resolved by Razor), otherwise fallback to base paths
+            icon: domIcon || base.icon,
+            image: domImage || base.image,
+            overlay: base.overlay || ''
+        };
     });
 
-    if (slidesNodes.length === 0) {
-        const slidesContainer = document.getElementById('slides') || document.querySelector('.slides');
+    // If there are no .slide elements in the DOM (edge case), create them from slidesData and re-query
+    if (!slidesNodes || slidesNodes.length === 0) {
+        const slidesContainer = document.getElementById('slides') || qs('.slides');
         if (slidesContainer) {
             slidesData.forEach(sd => {
                 const div = document.createElement('div');
                 div.className = 'slide';
+                // set data-src too in case other code reads it
+                div.setAttribute('data-src', sd.image);
                 div.style.backgroundImage = `url('${sd.image}')`;
                 slidesContainer.appendChild(div);
             });
+            // re-query slidesNodes after creation
+            slidesNodes = qsa('.slide');
+        } else {
+            console.warn('carouselFull: no slides container found (#slides)');
         }
+    } else {
+        // ensure existing slides have background images if data-src present
+        slidesNodes.forEach((s, i) => {
+            const src = s.getAttribute('data-src') || (slidesData[i] && slidesData[i].image);
+            if (src) s.style.backgroundImage = `url('${src}')`;
+        });
     }
 
+    // basic state
+    let idx = 0;
+    let timer = null;
+    const INTERVAL = 4000;
+
+    // render navigation dots
     function renderDots() {
         if (!dotsWrap) return;
         dotsWrap.innerHTML = '';
@@ -85,9 +144,11 @@ qsa('.nav-btn').forEach(btn => {
         }
     }
 
+    // show slide i
     function show(i) {
         const slides = qsa('.slide');
         const data = slidesData[i];
+        if (!data) return;
 
         if (heroTitle) heroTitle.classList.add('fade-out');
         if (heroDesc) heroDesc.classList.add('fade-out');
@@ -95,6 +156,7 @@ qsa('.nav-btn').forEach(btn => {
 
         slides.forEach((s, k) => s.classList.toggle('visible', k === i));
 
+        // small delay to sync text/icon transitions with background
         setTimeout(() => {
             if (heroTitle) {
                 heroTitle.textContent = data.title;
@@ -107,10 +169,16 @@ qsa('.nav-btn').forEach(btn => {
                 heroDesc.classList.add('fade-in');
             }
             if (heroIcon) {
+                // animate icon swap
                 heroIcon.style.transform = 'scale(.96)';
                 setTimeout(() => {
-                    heroIcon.src = data.icon;
-                    heroIcon.alt = data.title + ' icon';
+                    // ensure the icon URL is defined
+                    if (data.icon) {
+                        heroIcon.src = data.icon;
+                        heroIcon.alt = data.title + ' icon';
+                    } else {
+                        console.warn('carouselFull: icon URL missing for slide', i);
+                    }
                     heroIcon.style.width = heroIcon.style.width || '56px';
                     heroIcon.style.height = heroIcon.style.height || '56px';
                     heroIcon.style.objectFit = 'contain';
@@ -122,6 +190,7 @@ qsa('.nav-btn').forEach(btn => {
 
             if (dotsWrap) Array.from(dotsWrap.children).forEach((btn, k) => btn.classList.toggle('active', k === i));
 
+            // cleanup classes after animation
             setTimeout(() => {
                 if (heroTitle) heroTitle.classList.remove('fade-in');
                 if (heroDesc) heroDesc.classList.remove('fade-in');
@@ -152,7 +221,10 @@ qsa('.nav-btn').forEach(btn => {
     renderDots();
     show(idx);
     resetTimer();
+
 })();
+
+
 
 /* ========== uniform icon sizing (fallback) ========== */
 qsa('.icon-circle img, .badge img, .hero-icon, .logo-img, .small-logo, .search-row img').forEach(img => {
@@ -258,15 +330,16 @@ if (signupForm) {
         });
     }
 
-    signupForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+    signupForm.addEventListener('submit', () => {
         clearErrors(signupForm);
+
         const name = (qs('#su-name') || {}).value?.trim() || '';
         const email = (qs('#su-email') || {}).value?.trim() || '';
         const pwd = (qs('#su-password') || {}).value || '';
         const conf = (qs('#su-confirm') || {}).value || '';
         const role = (qs('#su-role') || {}).value || '';
         const terms = (qs('#su-terms') || {}).checked || false;
+
         const emailRegex = /^[^\s@]+@est\.univalle\.edu$/;
         const errors = [];
 
@@ -276,20 +349,17 @@ if (signupForm) {
         if (!(/[A-Z]/.test(pwd))) errors.push({ field: 'su-password', msg: 'Debe incluir al menos 1 mayúscula.' });
         if (!(/[a-z]/.test(pwd))) errors.push({ field: 'su-password', msg: 'Debe incluir al menos 1 minúscula.' });
         if (!(/[0-9]/.test(pwd))) errors.push({ field: 'su-password', msg: 'Debe incluir al menos 1 número.' });
+        if (!(/[^\da-zA-Z]/.test(pwd))) errors.push({ field: 'su-password', msg: 'Debe incluir al menos 1 símbolo.' });
         if (pwd !== conf) errors.push({ field: 'su-confirm', msg: 'Las contraseñas no coinciden.' });
         if (!role) errors.push({ field: 'su-role', msg: 'Selecciona un rol.' });
         if (!terms) errors.push({ field: 'su-terms', msg: 'Debes aceptar los términos.' });
 
-        if (errors.length) { showErrors(signupForm, errors); return; }
+        if (errors.length) {
+            showErrors(signupForm, errors);
+            return false; // detiene envío si hay errores
+        }
 
-        const btn = signupForm.querySelector('button[type="submit"]');
-        const old = btn.textContent;
-        btn.textContent = 'Creando...'; btn.disabled = true;
-        setTimeout(() => {
-            alert('Registro exitoso (demo). Redirigiendo...');
-            window.location.href = 'index.html';
-            btn.textContent = old; btn.disabled = false;
-        }, 1000);
+        return true; // permite que el formulario haga POST al servidor
     });
 }
 
