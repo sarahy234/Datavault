@@ -1,7 +1,7 @@
 # 📚 DataVault – Repositorio Digital de Material Académico  
 ### Ingeniería de Sistemas Informáticos – Universidad Privada del Valle
 **Versión:** 2.0.0  
-**Fecha:** Octubre 2025  
+**Fecha:** Noviembre 2025  
 
 ---
 
