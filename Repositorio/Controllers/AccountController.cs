@@ -41,7 +41,7 @@ namespace Repositorio.Controllers
             model.Nombre = (model.Nombre ?? "").Trim();
             model.Rol = (model.Rol ?? "").Trim();
 
-            // Validaciones básicas (aparecerán debajo de cada input)
+            // Validacion básicas (aparecerán debajo de cada input)
             if (string.IsNullOrWhiteSpace(model.Correo))
                 fieldErrors["Correo"] = "El correo es obligatorio.";
 
@@ -205,7 +205,7 @@ namespace Repositorio.Controllers
             ViewData["suRole"] = suRole ?? "";
             ViewData["suTerms"] = suTerms ? "true" : "false";
 
-            // ---------- VALIDACIONES DEL NOMBRE (NUEVAS) ----------
+            // ---------- Validacion DEL NOMBRE (NUEVAS) ----------
             if (string.IsNullOrWhiteSpace(suName))
             {
                 fieldErrors["su-name"] = "El nombre es obligatorio.";
@@ -227,7 +227,7 @@ namespace Repositorio.Controllers
                 }
             }
 
-            // VALIDACIONES OBLIGATORIAS (resto)
+            // Validacion OBLIGATORIAS (resto)
             if (string.IsNullOrWhiteSpace(suEmail))
                 fieldErrors["su-email"] = "El correo institucional es obligatorio.";
 

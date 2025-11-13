@@ -18,7 +18,7 @@ namespace Repositorio.Models
         public DbSet<Recurso> Recurso { get; set; }
         public DbSet<Version> Version { get; set; }
         public DbSet<Metadato> Metadato { get; set; }
-        public DbSet<Validacion> Validacione { get; set; }
+        public DbSet<Validacion> Validacion { get; set; }
         public DbSet<Notificacion> Notificacion { get; set; }
         public DbSet<Metrica> Metrica { get; set; }
 

@@ -21,5 +21,9 @@ namespace Repositorio.Models
         [ForeignKey("Recurso")]
         public int Id_Recurso { get; set; }
         public Recurso Recurso { get; set; }
+
+        [MaxLength(500)]
+        public string Ruta_Archivo { get; set; }
+
     }
 }

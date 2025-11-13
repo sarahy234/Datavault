@@ -40,7 +40,7 @@ namespace Repositorio.Models
         // Relaciones
         public ICollection<Version> Versiones { get; set; }
         public ICollection<Metadato> Metadatos { get; set; }
-        public ICollection<Validacion> Validaciones { get; set; }
+        public ICollection<Validacion> Validacion { get; set; }
         public ICollection<Notificacion> Notificaciones { get; set; }
         public ICollection<Metrica> Metricas { get; set; }
     }

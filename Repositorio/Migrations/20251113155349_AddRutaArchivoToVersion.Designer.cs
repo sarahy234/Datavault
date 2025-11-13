@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repositorio.Models;
 
@@ -11,9 +12,11 @@ using Repositorio.Models;
 namespace Repositorio.Migrations
 {
     [DbContext(typeof(RepositorioContext))]
-    partial class RepositorioContextModelSnapshot : ModelSnapshot
+    [Migration("20251113155349_AddRutaArchivoToVersion")]
+    partial class AddRutaArchivoToVersion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

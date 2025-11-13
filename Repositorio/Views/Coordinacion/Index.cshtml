@@ -129,16 +129,21 @@
                             <td>@r.Fecha_Subida.ToString("yyyy-MM-dd")</td>
                             <td><span class="badge-status">@r.Estado</span></td>
                             <td>
-                                <a asp-controller="Coordinacion" asp-action="Editar" asp-route-id="@r.Id_Recurso" class="btn-download"><i class="fas fa-edit"></i></a>
-                                <form asp-controller="Coordinacion" asp-action="CambiarEstado" method="post" style="display:inline;">
-                                    <input type="hidden" name="id" value="@r.Id_Recurso" />
-                                    <select name="nuevoEstado" onchange="this.form.submit()" class="filter-select" style="width:120px;">
-                                        <option value="Pendiente" selected="@(r.Estado == "Pendiente" ? "selected" : null)">Pendiente</option>
-                                        <option value="Oficial" selected="@(r.Estado == "Oficial" ? "selected" : null)">Oficial</option>
-                                        <option value="Archivado" selected="@(r.Estado == "Archivado" ? "selected" : null)">Archivado</option>
-                                    </select>
-                                </form>
+                                <div style="display: inline-flex; align-items: center; gap: 8px;">
+                                    <a asp-controller="Coordinacion" asp-action="Editar" asp-route-id="@r.Id_Recurso" class="btn-download">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form asp-controller="Coordinacion" asp-action="CambiarEstado" method="post">
+                                        <input type="hidden" name="id" value="@r.Id_Recurso" />
+                                        <select name="nuevoEstado" onchange="this.form.submit()" class="filter-select" style="width:120px;">
+                                            <option value="Pendiente" selected="@(r.Estado == "Pendiente" ? "selected" : null)">Pendiente</option>
+                                            <option value="Oficial" selected="@(r.Estado == "Oficial" ? "selected" : null)">Oficial</option>
+                                            <option value="Archivado" selected="@(r.Estado == "Archivado" ? "selected" : null)">Archivado</option>
+                                        </select>
+                                    </form>
+                                </div>
                             </td>
+
                         </tr>
                     }
                 }

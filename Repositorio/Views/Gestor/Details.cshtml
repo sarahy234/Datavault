@@ -1,0 +1,60 @@
+﻿@model Repositorio.Models.GestorDetailsViewModel
+@{
+    ViewData["Title"] = "Revisión de recurso";
+}
+
+<section class="container">
+    <h1>@Model.Recurso.Titulo</h1>
+
+    <div>
+        <p><strong>Autor:</strong> @Model.Recurso.Autor</p>
+        <p><strong>Materia:</strong> @Model.Recurso.MateriaPrincipal</p>
+        <p><strong>Tipo:</strong> @Model.Recurso.TipoRecurso</p>
+        <p><strong>Semestre:</strong> @Model.Recurso.Semestre</p>
+        <p><strong>Estado:</strong> @Model.Recurso.Estado</p>
+    </div>
+
+    <div style="margin-top:10px;">
+        <h3>Metadatos</h3>
+        @if (!Model.Metadatos.Any())
+        {
+            <p>No hay metadatos.</p>
+        }
+        else
+        {
+            <ul>@foreach(var m in Model.Metadatos) {
+            <li>@m.Titulo — @m.Materia — @m.Tipo_Recurso — @m.Palabras_Clave</li>
+        }
+</ul>
+                }
+    </div>
+
+    <div style="margin-top:10px;">
+        <h3>Acciones</h3>
+
+        <form asp-action="Aprobar" method="post" style="display:inline-block;">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.Recurso.Id_Recurso" />
+            <textarea name="comentario" placeholder="Comentario (opcional)"></textarea><br />
+            <button type="submit">Aprobar y Publicar</button>
+        </form>
+
+        <form asp-action="Rechazar" method="post" style="display:inline-block;margin-left:8px;">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.Recurso.Id_Recurso" />
+            <textarea name="comentario" placeholder="Motivo del rechazo"></textarea><br />
+            <button type="submit">Rechazar (dejar en pendiente)</button>
+        </form>
+
+        <form asp-action="SolicitarCorreccion" method="post" style="display:inline-block;margin-left:8px;">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.Recurso.Id_Recurso" />
+            <textarea name="comentario" placeholder="Qué corregir..."></textarea><br />
+            <button type="submit">Solicitar corrección</button>
+        </form>
+    </div>
+
+    <div style="margin-top:12px;">
+        <a asp-action="Index">Volver a la lista</a>
+    </div>
+</section>

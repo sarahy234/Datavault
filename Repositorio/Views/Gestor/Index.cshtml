@@ -1,6 +1,77 @@
-﻿@{
-    ViewData["Title"] = "Panel Gestor";
+﻿@model Repositorio.Models.GestorIndexViewModel
+@{
+    ViewData["Title"] = "Panel Gestor - Revisiones pendientes";
+    int totalPages = (int)System.Math.Ceiling(Model.TotalItems / (double)Model.PageSize);
 }
 
-<h1>Bienvenido Gestor</h1>
-<p>Esto es una prueba de login con EF Core.</p>
+<section class="container">
+    <h1>Cola de revisión</h1>
+
+    <form method="get" asp-action="Index" id="formFiltros">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <input type="text" name="search" value="@Model.Search" placeholder="Buscar..." />
+            <select name="materia">
+                <option value="">Todas las materias</option>
+                @foreach (var m in Model.Materias)
+                {
+                    <option value="@m" selected="@(m == Model.SelectedMateria ? "selected" : null)">@m</option>
+                }
+            </select>
+            <select name="semestre">
+                <option value="">Todos los semestres</option>
+                @foreach (var s in Model.Semestres)
+                {
+                    <option value="@s" selected="@(s == Model.SelectedSemestre ? "selected" : null)">@s</option>
+                }
+            </select>
+            <select name="tipo">
+                <option value="">Todos los tipos</option>
+                @foreach (var t in Model.Tipos)
+                {
+                    <option value="@t" selected="@(t == Model.SelectedTipo ? "selected" : null)">@t</option>
+                }
+            </select>
+            <input type="text" name="autor" value="@Model.SelectedAutor" placeholder="Autor" />
+            <button type="submit">Filtrar</button>
+        </div>
+    </form>
+
+    <p>Mostrando <strong>@Model.Recursos.Count</strong> de <strong>@Model.TotalItems</strong>.</p>
+
+    <table style="width:100%;border-collapse:collapse;margin-top:12px;">
+        <thead><tr><th>Título</th><th>Autor</th><th>Materia</th><th>Tipo</th><th>Semestre</th><th>Fecha</th><th>Acciones</th></tr></thead>
+        <tbody>
+            @if (!Model.Recursos.Any())
+            {
+                <tr><td colspan="7">No hay recursos pendientes.</td></tr>
+            }
+            else
+            {
+                foreach (var r in Model.Recursos)
+                {
+                    <tr>
+                        <td>@r.Titulo</td>
+                        <td>@r.Autor</td>
+                        <td>@r.MateriaPrincipal</td>
+                        <td>@r.TipoRecurso</td>
+                        <td>@r.Semestre</td>
+                        <td>@r.Fecha_Subida.ToString("yyyy-MM-dd")</td>
+                        <td><a asp-action="Details" asp-route-id="@r.Id_Recurso">Ver / Revisar</a></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <div style="margin-top:12px;display:flex;gap:8px;align-items:center;">
+        @if (Model.Page > 1)
+        {
+            <a href="@Url.Action("Index", new { page = Model.Page - 1 })">Anterior</a>
+        }
+        <div> Página @Model.Page de @totalPages </div>
+        @if (Model.Page < totalPages)
+        {
+            <a href="@Url.Action("Index", new { page = Model.Page + 1 })">Siguiente</a>
+        }
+    </div>
+</section>

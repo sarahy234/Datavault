@@ -370,7 +370,7 @@ namespace Repositorio.Migrations
 
                     b.HasIndex("Id_Recurso");
 
-                    b.ToTable("Validaciones");
+                    b.ToTable("Validacion");
                 });
 
             modelBuilder.Entity("Repositorio.Models.Version", b =>
@@ -510,13 +510,13 @@ namespace Repositorio.Migrations
             modelBuilder.Entity("Repositorio.Models.Validacion", b =>
                 {
                     b.HasOne("Repositorio.Models.Gestor", "Gestor")
-                        .WithMany("Validaciones")
+                        .WithMany("Validacion")
                         .HasForeignKey("Id_Gestor")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Repositorio.Models.Recurso", "Recurso")
-                        .WithMany("Validaciones")
+                        .WithMany("Validacion")
                         .HasForeignKey("Id_Recurso")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -544,7 +544,7 @@ namespace Repositorio.Migrations
 
             modelBuilder.Entity("Repositorio.Models.Gestor", b =>
                 {
-                    b.Navigation("Validaciones");
+                    b.Navigation("Validacion");
                 });
 
             modelBuilder.Entity("Repositorio.Models.Recurso", b =>
@@ -555,7 +555,7 @@ namespace Repositorio.Migrations
 
                     b.Navigation("Notificaciones");
 
-                    b.Navigation("Validaciones");
+                    b.Navigation("Validacion");
 
                     b.Navigation("Versiones");
                 });

@@ -229,7 +229,7 @@ namespace Repositorio.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Validaciones",
+                name: "Validacion",
                 columns: table => new
                 {
                     Id_Validacion = table.Column<int>(type: "int", nullable: false)
@@ -242,15 +242,15 @@ namespace Repositorio.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Validaciones", x => x.Id_Validacion);
+                    table.PrimaryKey("PK_Validacion", x => x.Id_Validacion);
                     table.ForeignKey(
-                        name: "FK_Validaciones_Gestores_Id_Gestor",
+                        name: "FK_Validacion_Gestores_Id_Gestor",
                         column: x => x.Id_Gestor,
                         principalTable: "Gestores",
                         principalColumn: "Id_Gestor",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Validaciones_Recursos_Id_Recurso",
+                        name: "FK_Validacion_Recursos_Id_Recurso",
                         column: x => x.Id_Recurso,
                         principalTable: "Recursos",
                         principalColumn: "Id_Recurso",
@@ -335,13 +335,13 @@ namespace Repositorio.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Validaciones_Id_Gestor",
-                table: "Validaciones",
+                name: "IX_Validacion_Id_Gestor",
+                table: "Validacion",
                 column: "Id_Gestor");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Validaciones_Id_Recurso",
-                table: "Validaciones",
+                name: "IX_Validacion_Id_Recurso",
+                table: "Validacion",
                 column: "Id_Recurso");
 
             migrationBuilder.CreateIndex(
@@ -372,7 +372,7 @@ namespace Repositorio.Migrations
                 name: "TIs");
 
             migrationBuilder.DropTable(
-                name: "Validaciones");
+                name: "Validacion");
 
             migrationBuilder.DropTable(
                 name: "Versiones");

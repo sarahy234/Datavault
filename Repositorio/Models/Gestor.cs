@@ -19,6 +19,6 @@ namespace Repositorio.Models
         public string Area_Responsable { get; set; }
 
         // Relaciones
-        public ICollection<Validacion> Validaciones { get; set; }
+        public ICollection<Validacion> Validacion { get; set; }
     }
 }
